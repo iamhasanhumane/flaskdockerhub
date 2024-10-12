@@ -13,19 +13,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-
       - name: Log in to Docker Hub
         uses: docker/login-action@v1
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: your-dockerhub-username/flask-hello-world:latest
+      - name: Build Docker image
+        run: |
+          docker build -t hasanhuman/flask-hello-world:latest .
+
+      - name: Push Docker image
+        run: |
+          docker push your-dockerhub-username/flask-hello-world:latest
