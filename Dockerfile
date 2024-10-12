@@ -2,7 +2,7 @@ FROM mcr.microsoft.com/windows/nanoserver:ltsc2022
 
 SHELL ["powershell", "-Command"]
 
-# Install Python 3.12
+# Download Python installer
 RUN Invoke-WebRequest -Uri https://www.python.org/ftp/python/3.12.0/python-3.12.0-amd64.exe -OutFile python-installer.exe; \
     Start-Process -Wait -FilePath python-installer.exe -ArgumentList '/quiet InstallAllUsers=1 PrependPath=1'; \
     Remove-Item -Force python-installer.exe
