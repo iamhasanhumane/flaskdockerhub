@@ -15,8 +15,8 @@ RUN powershell -Command " \
     Remove-Item -Force 'python-installer.exe'"
 
 # Ensure Python is available and install Flask
-RUN cmd /C "C:\Program Files\Python312\python.exe -m pip install --upgrade pip" && \
-    cmd /C "C:\Program Files\Python312\python.exe -m pip install -r requirements.txt"
+RUN cmd /C "\"C:\Program Files\Python312\python.exe\" -m pip install --upgrade pip" && \
+    cmd /C "\"C:\Program Files\Python312\python.exe\" -m pip install -r requirements.txt"
 
 # Expose the port the app runs on
 EXPOSE 5000
