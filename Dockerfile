@@ -2,10 +2,10 @@ FROM mcr.microsoft.com/windows/nanoserver:ltsc2022
 
 SHELL ["powershell", "-Command"]
 
-# Download Python installer
-RUN Invoke-WebRequest -Uri https://www.python.org/ftp/python/3.12.0/python-3.12.0-amd64.exe -OutFile python-installer.exe; \
-    Start-Process -Wait -FilePath python-installer.exe -ArgumentList '/quiet InstallAllUsers=1 PrependPath=1'; \
-    Remove-Item -Force python-installer.exe
+# Install Python using Chocolatey (a package manager for Windows)
+RUN Set-ExecutionPolicy Bypass -Scope Process -Force; \
+    iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')); \
+    choco install python --version=3.12.0 -y
 
 # Set working directory
 WORKDIR /app
