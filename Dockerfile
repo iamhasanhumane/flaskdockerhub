@@ -8,10 +8,11 @@ WORKDIR /app
 COPY app.py ./
 COPY requirements.txt ./
 
-# Install Python (3.12.x or compatible)
-RUN curl -o python-3.12.0-amd64.exe https://www.python.org/ftp/python/3.12.0/python-3.12.0-amd64.exe; \
-    Start-Process -Wait -FilePath python-3.12.0-amd64.exe -ArgumentList '/quiet InstallAllUsers=1 PrependPath=1'; \
-    Remove-Item -Force python-3.12.0-amd64.exe
+# Download and install Python
+RUN powershell -Command " \
+    Invoke-WebRequest -Uri 'https://www.python.org/ftp/python/3.12.0/python-3.12.0-amd64.exe' -OutFile 'python-installer.exe'; \
+    Start-Process -Wait -FilePath 'python-installer.exe' -ArgumentList '/quiet InstallAllUsers=1 PrependPath=1'; \
+    Remove-Item -Force 'python-installer.exe'"
 
 # Install Flask
 RUN python -m pip install --upgrade pip; \
@@ -22,4 +23,3 @@ EXPOSE 5000
 
 # Command to run the application
 CMD ["python", "app.py"]
-
