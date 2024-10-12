@@ -14,12 +14,13 @@ RUN powershell -Command " \
     Start-Process -Wait -FilePath 'python-installer.exe' -ArgumentList '/quiet InstallAllUsers=1 PrependPath=1'; \
     Remove-Item -Force 'python-installer.exe'"
 
-# Install Flask
-RUN python -m pip install --upgrade pip; \
-    python -m pip install -r requirements.txt
+# Ensure Python is available and install Flask
+RUN cmd /C "C:\Program Files\Python312\python.exe -m pip install --upgrade pip" && \
+    cmd /C "C:\Program Files\Python312\python.exe -m pip install -r requirements.txt"
 
 # Expose the port the app runs on
 EXPOSE 5000
 
 # Command to run the application
-CMD ["python", "app.py"]
+CMD ["C:\\Program Files\\Python312\\python.exe", "app.py"] 
+
