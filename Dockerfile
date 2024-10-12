@@ -1,11 +1,5 @@
-FROM mcr.microsoft.com/windows/nanoserver:ltsc2022
-
-SHELL ["powershell", "-Command"]
-
-# Install Python using Chocolatey (a package manager for Windows)
-RUN Set-ExecutionPolicy Bypass -Scope Process -Force; \
-    iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1')); \
-    choco install python --version=3.12.0 -y
+# Use a base image that includes Python
+FROM mcr.microsoft.com/windows/servercore:ltsc2022
 
 # Set working directory
 WORKDIR /app
@@ -13,6 +7,11 @@ WORKDIR /app
 # Copy the application files
 COPY app.py ./
 COPY requirements.txt ./
+
+# Install Python (3.12.x or compatible)
+RUN curl -o python-3.12.0-amd64.exe https://www.python.org/ftp/python/3.12.0/python-3.12.0-amd64.exe; \
+    Start-Process -Wait -FilePath python-3.12.0-amd64.exe -ArgumentList '/quiet InstallAllUsers=1 PrependPath=1'; \
+    Remove-Item -Force python-3.12.0-amd64.exe
 
 # Install Flask
 RUN python -m pip install --upgrade pip; \
@@ -23,3 +22,4 @@ EXPOSE 5000
 
 # Command to run the application
 CMD ["python", "app.py"]
+
