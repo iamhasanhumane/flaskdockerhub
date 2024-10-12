@@ -25,4 +25,4 @@ jobs:
 
       - name: Push Docker image
         run: |
-          docker push your-dockerhub-username/flask-hello-world:latest
+          docker push hasanhuman/flask-hello-world:latest
