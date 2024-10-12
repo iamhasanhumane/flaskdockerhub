@@ -1,8 +1,13 @@
-# Use the official Python image from the Docker Hub
-FROM python:3.9-slim
+FROM mcr.microsoft.com/windows/servercore:ltsc2019
 
+SHELL ["powershell", "-Command"]
+
+# Install Python
+RUN Invoke-WebRequest -Uri https://www.python.org/ftp/python/3.9.0/python-3.9.0-amd64.exe -OutFile python-installer.exe; \
+    Start-Process -Wait -FilePath python-installer.exe -ArgumentList '/quiet InstallAllUsers=1 PrependPath=1'; \
+    Remove-Item -Force python-installer.exe
 # Set the working directory
-WORKDIR /app
+WORKDIR /app 
 
 # Copy the requirements file and install dependencies
 COPY requirements.txt ./
@@ -15,4 +20,4 @@ COPY app.py ./
 EXPOSE 5000
 
 # Command to run the application
-CMD ["python", "app.py"]
+CMD ["python", "app.py"] 
